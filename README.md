@@ -63,7 +63,7 @@ Cyrrently, __ses_common__ is not published to public repository. To use __ses_co
  ``` scala
     
     libraryDepencies ++= (
-    "org.hfgiii.ses.common" %% "ses_common_macros" % "0.1.0-SNAPSHOT",
-    "org.hfgiii.ses.common" %% "ses_common" % "0.1.0-SNAPSHOT",)
+    "org.hfgiii" %% "ses_common_macros" % "0.1.0-SNAPSHOT",
+    "org.hfgiii" %% "ses_common" % "0.1.0-SNAPSHOT",)
  
  ```   

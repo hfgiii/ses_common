@@ -5,7 +5,7 @@ object ESCommonBuild extends Build {
   import Deps._
   import Reps._
 
-  val buildOrganization = "org.hfgiii.ses.common"
+  val buildOrganization = "org.hfgiii"
   val buildVersion = "0.1.0-SNAPSHOT"
   val buildPublishTo = None
   val buildScalaVersion = "2.11.2"
