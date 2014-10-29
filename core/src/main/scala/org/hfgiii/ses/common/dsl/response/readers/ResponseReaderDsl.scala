@@ -11,7 +11,7 @@ import syntax.typeable._
 
 import scala.collection.JavaConversions._
 import scala.concurrent.Future
-import org.hfgiii.ses.common.macros.Mappable
+import org.hfgiii.ses.common.macros.SesMacros._
 
 trait ResponseReaderDsl {
 
