@@ -73,7 +73,7 @@ This module contains functions to init and shutdown elasticsearch. Example usage
            "org.hfgiii.sesportfolio.analytics.script.PortfolioNativeScriptFactory")
       .put("es.logger.level", "INFO")
 
-    val client = initLocalEs4sClient(settings) (1)
+    val client = initLocalEs4sClient(settings) //(1)
 ```
 
 Legend :
@@ -87,7 +87,7 @@ This module contains helpful functions used when loading documents into elastics
 
 ``` scala
 
-                     (1)           (2)        (3)
+                    // (1)           (2)        (3)
     bulkIndexLoad("sesportfolio",eqIndexed,eqIndexed.length)
     
 
