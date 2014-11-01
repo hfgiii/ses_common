@@ -18,6 +18,14 @@ trait EsAdmin {
 
   def emptyClient:ElasticClient = ElasticClient.local
 
+  def withES(ex: => Unit)(implicit client:ElasticClient): Unit = {
+
+    ex
+
+    shutdownElasticsearch
+
+  }
+
 
 }
 
