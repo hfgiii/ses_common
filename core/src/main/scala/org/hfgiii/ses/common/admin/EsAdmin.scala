@@ -21,6 +21,11 @@ trait EsAdmin {
   def initRemoteEs4sClient(settings:ImmutableSettings.Builder,addresses:(String,Int)*):ElasticClient =
     ElasticClient.remote(settings.build,addresses: _*)
 
+
+  def initRemoteEs4sClient(addresses:(String,Int)*):ElasticClient =
+    ElasticClient.remote(addresses: _*)
+
+
   def shutdownElasticsearch(implicit client:ElasticClient) =
     client.shutdown.await
 
