@@ -5,9 +5,10 @@ import scala.reflect.macros.blackbox.Context
 
 object SesMacros {
 
+
   trait Mappable[T] {
-    def toMap(t: T): Map[String, Any]
-    def fromMap(map: Map[String, Any]): T
+    def toMap(t: T, keyMapper: String => String): Map[String, Any]
+    def fromMap(map: Map[String, Any],keyMapper: String => String): T
   }
 
   object Mappable {
@@ -28,18 +29,18 @@ object SesMacros {
         val name = field.name.toTermName
         val decoded = name.decodedName.toString
         val returnType = tpe.decl(name).typeSignature
-        val retStr     = returnType.toString  //Hack to force the load case class children
+        val retStr     = returnType.toString  //Hack to force to load case class children
 
         if(returnType.typeSymbol.asClass.isCaseClass)
-          (q"$decoded → implicitly[Mappable[$returnType]].toMap(t.$name)", q"implicitly[Mappable[$returnType]].fromMap(map($decoded).asInstanceOf[Map[String,Any]])")
+          (q"$decoded → implicitly[Mappable[$returnType]].toMap(t.$name, keyMapper)", q"implicitly[Mappable[$returnType]].fromMap(map($decoded).asInstanceOf[Map[String,Any]],keyMapper)")
         else
-          (q"$decoded → t.$name", q"map($decoded).asInstanceOf[$returnType]")
+          (q"keyMapper($decoded) → t.$name", q"map(keyMapper($decoded)).asInstanceOf[$returnType]")
       }.unzip
 
       c.Expr[Mappable[T]] { q"""
       new Mappable[$tpe] {
-        def toMap(t: $tpe): Map[String, Any] = Map(..$toMapParams)
-        def fromMap(map: Map[String, Any]): $tpe = $companion(..$fromMapParams)
+        def toMap(t: $tpe, keyMapper: String => String): Map[String, Any] = Map(..$toMapParams)
+        def fromMap(map: Map[String, Any],keyMapper: String => String): $tpe = $companion(..$fromMapParams)
       }
     """ }
     }

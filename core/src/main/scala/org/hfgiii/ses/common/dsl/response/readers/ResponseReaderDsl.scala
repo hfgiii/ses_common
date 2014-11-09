@@ -15,15 +15,17 @@ import org.hfgiii.ses.common.macros.SesMacros._
 
 trait ResponseReaderDsl {
 
-  def toMap[T : Mappable](t:T) =
-    implicitly[Mappable[T]].toMap(t)
+  protected def idMapper(key:String) = key
 
-  def fromMap[T : Mappable](map: Map[String, Any]) =
-    implicitly[Mappable[T]].fromMap(map)
+  def toMap[T : Mappable](t:T,keyMapper:String => String) =
+    implicitly[Mappable[T]].toMap(t, keyMapper)
+
+  def fromMap[T : Mappable](map: Map[String, Any],keyMapper:String => String) =
+    implicitly[Mappable[T]].fromMap(map,keyMapper:String => String)
 
   def fromHit[C : Mappable](hit:SearchHit):Option[C] =
     hit.sourceAsMap.cast[Map[String,Any]].map {
-      m => fromMap(m)
+      m => fromMap(m,idMapper)
     }
 
   def fromHitFields[C : Mappable](hit:SearchHit):C = {
@@ -31,7 +33,7 @@ trait ResponseReaderDsl {
     val m = hitFields.keySet.foldLeft(Map.empty[String,Any]) {
       (m,key) => m + (key -> hitFields.get(key).getValue)
     }
-    fromMap(m)
+    fromMap(m,idMapper)
   }
 
   def aggActionFromBucket(bucket:Option[Bucket])(aggName:String)(action :PartialFunction[Aggregation,Unit]) =
