@@ -34,17 +34,20 @@ trait EsAdmin {
 
   def emptyClient:ElasticClient = ElasticClient.local
 
+  def withES(ex: => Unit)(implicit remote:Boolean,client:ElasticClient): Unit =
+    withES(remote)(ex)
+
+
   def withES(remote:Boolean)(ex: => Unit)(implicit client:ElasticClient): Unit = {
 
     ex
 
     if(remote)
-       closeElasticsearchClient
+      closeElasticsearchClient
     else
-       shutdownElasticsearch
+      shutdownElasticsearch
 
   }
-
 
 }
 
