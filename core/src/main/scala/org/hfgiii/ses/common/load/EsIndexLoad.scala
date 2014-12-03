@@ -14,7 +14,7 @@ trait EsIndexLoad {
     var backoff = 0
     var actual = 0l
 
-    while (backoff <= 500 && actual != expected) {
+    while (backoff <= 50000 && actual != expected) {
       if (backoff > 0)
         Thread.sleep(100)
       backoff = backoff + 1

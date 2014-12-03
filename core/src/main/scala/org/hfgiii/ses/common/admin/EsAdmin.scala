@@ -38,15 +38,16 @@ trait EsAdmin {
     withES(remote)(ex)
 
 
-  def withES(remote:Boolean)(ex: => Unit)(implicit client:ElasticClient): Unit = {
+  def withES(remote:Boolean,shutdown:Boolean=false)(ex: => Unit)(implicit client:ElasticClient): Unit = {
 
     ex
 
-    if(remote)
-      closeElasticsearchClient
-    else
-      shutdownElasticsearch
-
+    if(shutdown) {
+      if (remote)
+        closeElasticsearchClient
+      else
+        shutdownElasticsearch
+    }
   }
 
 }
